@@ -6,12 +6,12 @@ import { FaUserPlus } from 'react-icons/fa';
 import { FiMail, FiLock, FiEye, FiEyeOff } from 'react-icons/fi';
 
 const SignUp: React.FC = () => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
-  const [error, setError] = useState('');
-  const [showPassword, setShowPassword] = useState(false);
-  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [email, setEmail] = useState<string>('');
+  const [password, setPassword] = useState<string>('');
+  const [confirmPassword, setConfirmPassword] = useState<string>('');
+  const [error, setError] = useState<string>('');
+  const [showPassword, setShowPassword] = useState<boolean>(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState<boolean>(false);
   const navigate = useNavigate();
   const setToken = useAuthStore((state) => state.setToken);
 
@@ -23,9 +23,13 @@ const SignUp: React.FC = () => {
 
     try {
       const response = await register(email, password);
+      if(response.data.token) {
       setToken(response.data.token);
-      // alert('User registered successfully');
       navigate('/dashboard');
+      }
+      else {
+        setError('Registration failed. Please try again.');
+      }
     } catch (error) {
       setError('Registration failed. Please try again.');
       console.error('Registration failed', error);

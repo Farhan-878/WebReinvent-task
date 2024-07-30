@@ -5,19 +5,23 @@ import { login } from '../services/api';
 import { useAuthStore } from '../store';
 
 const SignIn: React.FC = () => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [showPassword, setShowPassword] = useState(false);
-  const [error, setError] = useState('');
+  const [email, setEmail] = useState<string>('');
+  const [password, setPassword] = useState<string>('');
+  const [showPassword, setShowPassword] = useState<boolean>(false);
+  const [error, setError] = useState<string>('');
   const navigate = useNavigate();
   const setToken = useAuthStore((state) => state.setToken);
 
   const handleSignIn = async () => {
     try {
       const response = await login(email, password);
+      if(response.data.token) {
       setToken(response.data.token);
-      // alert('User logged in successfully');
       navigate('/dashboard');
+      }
+      else {
+        setError('Login failed. Please try again.');
+      }
     } catch (error) {
       setError('Login failed. Please try again.');
       console.error('Login failed', error);
